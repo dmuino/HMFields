@@ -67,13 +67,33 @@ class HMFieldsView extends Ui.DataField {
         textC(dc, 150, 154, Graphics.FONT_NUMBER_MEDIUM, model["paceAvg"]);
         textL(dc, 124, 186, Graphics.FONT_XTINY, "A PACE");
 
-        textL(dc, 75, 206, Graphics.FONT_XTINY, model["time"]);
-        var bat = model["battery"];
-        if (bat.length() <= 3) {
-			textR(dc, 144, 206, Graphics.FONT_XTINY, bat);
-		}
+        textL(dc, 75, 206, Graphics.FONT_TINY, model["time"]);
+        drawBattery(dc);
         drawLayout(dc);
         return true;
+    }
+
+    function drawBattery(dc) {
+        var pct = Sys.getSystemStats().battery;
+        dc.drawRectangle(120, 202, 18, 11);
+        dc.fillRectangle(138, 205, 2, 5);
+
+        var color = Graphics.COLOR_GREEN;
+        if (pct < 25) {
+            color = Graphics.COLOR_RED;
+        } else if (pct < 40) {
+            color = Graphics.COLOR_YELLOW;
+        }
+        dc.setColor(color, Graphics.COLOR_TRANSPARENT);
+
+        var width = (pct * 16.0 / 100 + 0.5).toLong();
+        if (width > 0) {
+            //Sys.println("" + pct + "=" + width);
+            if (width > 16) {
+                width = 16;
+            }
+            dc.fillRectangle(121, 203, width, 9);
+        }
     }
 
     function compute(info) {

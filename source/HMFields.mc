@@ -5,7 +5,6 @@ class HMFields {
      // last 60 seconds - 'current speed' samples
     var lastSecs = new [60];
     var curPos;
-    var expectedHalf;
 
     function initialize() {
         for (var i = 0; i < lastSecs.size(); ++i) {
@@ -66,32 +65,22 @@ class HMFields {
         return unit / speed;
     }
 
-    function getPredictedHalfTime(info) {
-        // See Activity.Info in the documentation for available information.
-        if (info.currentSpeed == null || info.elapsedDistance == null) {
-            return expectedHalf;
+    function getPredictedHalfTime(distance, time, avgSpeed, avg10s) {
+        if (distance == null || time == null || avgSpeed == null || avg10s == null) {
+            return null;
         }
 
         var minAvg = getAverage(lastSecs);
-        if (minAvg == null || info.averageSpeed == null) {
-            return expectedHalf;
+        if (minAvg == null) {
+            return null;
         }
 
-        var distanceRemaining = 21100 - info.elapsedDistance;
-        var avg = info.currentSpeed * .2 + minAvg * .5 + info.averageSpeed * .3;
+        var elapsedTimeSecs = time / 1000;
+        var distanceRemaining = 21100 - distance;
+        var avg = avg10s * .25 + minAvg * .5 + avgSpeed * .25;
 
-        var timeRemaining = distanceRemaining / avg;
-        expectedHalf = timeRemaining.toLong() + 1 + (info.elapsedTime / 1000);
-        return expectedHalf;
-    }
-
-    function toPercentage(n) {
-        if (n != null) {
-            var pct = n * 100;
-            return n.format("%.0f") + "%";
-        } else {
-            return "---";
-        }
+        var timeRemaining = (distanceRemaining / avg).toLong() + 1;
+        return timeRemaining + elapsedTimeSecs;
     }
 
     function toDist(d) {
@@ -149,14 +138,15 @@ class HMFields {
     }
 
     function compute(info) {
-        if (info.currentSpeed != null) {
+        if (info.currentSpeed != null && info.currentSpeed > 0) {
             var idx = curPos % lastSecs.size();
             curPos++;
             lastSecs[idx] = info.currentSpeed;
         }
 
         var avg10s = getNAvg(lastSecs, curPos, 10);
-        var expectedHalf = getPredictedHalfTime(info);
+        //distance, time, avgSpeed, avg10s
+        var expectedHalf = getPredictedHalfTime(info.elapsedDistance, info.elapsedTime, info.averageSpeed, avg10s);
 
         var halfSecs = null;
         if (expectedHalf != null && expectedHalf >= 3600) {
@@ -174,7 +164,6 @@ class HMFields {
         }
 
         var model = {
-            "battery" => toPercentage(Sys.getSystemStats().battery),
             "dist" => toDist(info.elapsedDistance),
             "hr" => toStr(info.currentHeartRate),
             "timer" => fmtSecs(elapsed),
