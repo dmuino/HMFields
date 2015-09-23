@@ -9,7 +9,7 @@ class HMFieldsView extends Ui.DataField {
         fields = new HMFields();
         model = { "battery" => "0%" };
     }
-        
+
     function onLayout(dc) {
     }
 
@@ -37,48 +37,51 @@ class HMFieldsView extends Ui.DataField {
         dc.clear();
 
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-        text(dc, 36, 45, Graphics.FONT_NUMBER_MEDIUM,  model["half"]);
+        textL(dc, 36, 45, Graphics.FONT_NUMBER_MEDIUM,  model["half"]);
         if (model["halfSecs"] != null) {
             var length = dc.getTextWidthInPixels(model["half"], Graphics.FONT_NUMBER_MEDIUM);
-            text(dc, 36 + length + 1, 55, Graphics.FONT_NUMBER_MILD, model["halfSecs"]);
+            textL(dc, 36 + length + 1, 55, Graphics.FONT_NUMBER_MILD, model["halfSecs"]);
         }
-        text(dc, 55, 18, Graphics.FONT_XTINY, "HALF");
-        
-        text(dc, 112, 45, Graphics.FONT_NUMBER_MEDIUM,  model["timer"]);        
+        textL(dc, 55, 18, Graphics.FONT_XTINY, "HALF");
+
+        textL(dc, 112, 45, Graphics.FONT_NUMBER_MEDIUM,  model["timer"]);
         if (model["timerSecs"] != null) {
             var length = dc.getTextWidthInPixels(model["timer"], Graphics.FONT_NUMBER_MEDIUM);
-            text(dc, 112 + length + 1, 55, Graphics.FONT_NUMBER_MILD, model["timerSecs"]);
+            textL(dc, 112 + length + 1, 55, Graphics.FONT_NUMBER_MILD, model["timerSecs"]);
         }
-        
-        text(dc, 120, 18, Graphics.FONT_XTINY,  "TIMER");
-        
+
+        textL(dc, 120, 18, Graphics.FONT_XTINY,  "TIMER");
+
         textC(dc, 30, 107, Graphics.FONT_NUMBER_MEDIUM, model["cadence"]);
         textC(dc, 30, 79, Graphics.FONT_XTINY,  "CAD");
-        
+
         textC(dc, 110, 107, Graphics.FONT_NUMBER_MEDIUM, model["pace10s"]);
-        text(dc, 78, 79, Graphics.FONT_XTINY,  "PACE 10s");
-        
+        textL(dc, 78, 79, Graphics.FONT_XTINY,  "PACE 10s");
+
         textC(dc, 180, 107, Graphics.FONT_NUMBER_MEDIUM, model["hr"]);
         textC(dc, 180, 79, Graphics.FONT_XTINY,  "HR");
-        
-        textC(dc, 66, 154, Graphics.FONT_NUMBER_MEDIUM, model["dist"]);
-        text(dc, 54, 186, Graphics.FONT_XTINY, "DIST");
-        
-        textC(dc, 150, 154, Graphics.FONT_NUMBER_MEDIUM, model["paceAvg"]);
-        text(dc, 124, 186, Graphics.FONT_XTINY, "A PACE");
-        
-        text(dc, 100, 206, Graphics.FONT_XTINY, model["battery"]);
 
+        textC(dc, 66, 154, Graphics.FONT_NUMBER_MEDIUM, model["dist"]);
+        textL(dc, 54, 186, Graphics.FONT_XTINY, "DIST");
+
+        textC(dc, 150, 154, Graphics.FONT_NUMBER_MEDIUM, model["paceAvg"]);
+        textL(dc, 124, 186, Graphics.FONT_XTINY, "A PACE");
+
+        textL(dc, 75, 206, Graphics.FONT_XTINY, model["time"]);
+        var bat = model["battery"];
+        if (bat.length() <= 3) {
+			textR(dc, 144, 206, Graphics.FONT_XTINY, bat);
+		}
         drawLayout(dc);
         return true;
     }
 
     function compute(info) {
-        model = fields.compute(info);     
+        model = fields.compute(info);
         return 1;
     }
 
-    function text(dc, x, y, font, s) {
+    function textL(dc, x, y, font, s) {
         if (s != null) {
             dc.drawText(x, y, font, s, Graphics.TEXT_JUSTIFY_LEFT|Graphics.TEXT_JUSTIFY_VCENTER);
         }
@@ -90,4 +93,9 @@ class HMFieldsView extends Ui.DataField {
         }
     }
 
+    function textR(dc, x, y, font, s) {
+        if (s != null) {
+            dc.drawText(x, y, font, s, Graphics.TEXT_JUSTIFY_RIGHT|Graphics.TEXT_JUSTIFY_VCENTER);
+        }
+    }
 }

@@ -136,6 +136,18 @@ class HMFields {
         return fmt;
     }
 
+    function fmtTime(clock) {
+        var h = clock.hour;
+        if (!Sys.getDeviceSettings().is24Hour) {
+            if (h > 12) {
+                h -= 12;
+            } else if (h == 0) {
+                h += 12;
+            }
+        }
+        return "" + h + ":" + clock.min.format("%02d");
+    }
+
     function compute(info) {
         if (info.currentSpeed != null) {
             var idx = curPos % lastSecs.size();
@@ -171,6 +183,7 @@ class HMFields {
             "pace10s" =>  fmtSecs(toPace(avg10s)),
             "paceAvg" => fmtSecs(toPace(info.averageSpeed)),
             "half" => fmtSecs(expectedHalf),
+            "time" => fmtTime(Sys.getClockTime()),
             "halfSecs" => halfSecs
         };
         //Sys.println(model);
