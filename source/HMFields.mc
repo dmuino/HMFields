@@ -70,13 +70,17 @@ class HMFields {
             return null;
         }
 
+        var elapsedTimeSecs = time / 1000;
+        var distanceRemaining = 21100 - distance;
+        if (distanceRemaining <= 0) {
+            return elapsedTimeSecs;
+        }
+
         var minAvg = getAverage(lastSecs);
         if (minAvg == null) {
             return null;
         }
 
-        var elapsedTimeSecs = time / 1000;
-        var distanceRemaining = 21100 - distance;
         var avg = avg10s * .25 + minAvg * .5 + avgSpeed * .25;
 
         var timeRemaining = (distanceRemaining / avg).toLong() + 1;
