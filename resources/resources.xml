@@ -1,5 +1,5 @@
 <resources>
-    <string id="AppName">MyDataField</string>
+  <string id="AppName">HMFields</string>
 
     <bitmap id="LauncherIcon" filename="images/launcher_icon.png" />
 </resources>
