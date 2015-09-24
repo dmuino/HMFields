@@ -22,4 +22,9 @@ Connect IQ DataField for the Fenix3 watch meant to be used while racing a Half M
 
 * A PACE: Average pace.
 
-Bottom of the screen shows the remaining battery as percentage.
+Bottom of the screen shows the time and a remaining battery icon:
+
+* green: remaining battery > 40%
+* yellow: between 25% and 40%
+* red: under 25%
+
