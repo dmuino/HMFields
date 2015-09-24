@@ -28,3 +28,10 @@ Bottom of the screen shows the time and a remaining battery icon:
 * yellow: between 25% and 40%
 * red: under 25%
 
+## Installation
+
+* Open Settings -> App -> Run -> Data Screens
+* Select screen (I use screen 1)
+* Select single field layout
+* Use connect iq field -> HMFields
+
