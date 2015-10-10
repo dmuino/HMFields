@@ -2,7 +2,7 @@ using Toybox.Time as Time;
 using Toybox.System as Sys;
 
 class HMFields {
-     // last 60 seconds - 'current speed' samples
+    // last 60 seconds - 'current speed' samples
     var lastSecs = new [60];
     var curPos;
 
@@ -168,16 +168,18 @@ class HMFields {
         }
 
         var model = {
-            "dist" => toDist(info.elapsedDistance),
-            "hr" => toStr(info.currentHeartRate),
-            "timer" => fmtSecs(elapsed),
-            "timerSecs" => elapsedSecs,
-            "cadence" => toStr(info.currentCadence),
-            "pace10s" =>  fmtSecs(toPace(avg10s)),
-            "paceAvg" => fmtSecs(toPace(info.averageSpeed)),
-            "half" => fmtSecs(expectedHalf),
-            "time" => fmtTime(Sys.getClockTime()),
-            "halfSecs" => halfSecs
+            :dist => toDist(info.elapsedDistance),
+            :hr => toStr(info.currentHeartRate),
+            :hrN => info.currentHeartRate,
+            :timer => fmtSecs(elapsed),
+            :timerSecs => elapsedSecs,
+            :cadence => toStr(info.currentCadence),
+            :cadenceN => info.currentCadence,
+            :pace10s =>  fmtSecs(toPace(avg10s)),
+            :paceAvg => fmtSecs(toPace(info.averageSpeed)),
+            :half => fmtSecs(expectedHalf),
+            :time => fmtTime(Sys.getClockTime()),
+            :halfSecs => halfSecs
         };
         //Sys.println(model);
         return model;
