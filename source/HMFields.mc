@@ -1,10 +1,25 @@
 using Toybox.Time as Time;
 using Toybox.System as Sys;
 
+
 class HMFields {
     // last 60 seconds - 'current speed' samples
-    var lastSecs = new [60];
-    var curPos;
+    hidden var lastSecs = new [60];
+    hidden var curPos;
+
+    // public fields - usable after the user calls compute
+    var dist;
+    var hr;
+    var hrN;
+    var timer;
+    var timerSecs;
+    var cadence;
+    var cadenceN;
+    var pace10s;
+    var paceAvg;
+    var half;
+    var time;
+    var halfSecs;
 
     function initialize() {
         for (var i = 0; i < lastSecs.size(); ++i) {
@@ -167,21 +182,17 @@ class HMFields {
             }
         }
 
-        var model = {
-            :dist => toDist(info.elapsedDistance),
-            :hr => toStr(info.currentHeartRate),
-            :hrN => info.currentHeartRate,
-            :timer => fmtSecs(elapsed),
-            :timerSecs => elapsedSecs,
-            :cadence => toStr(info.currentCadence),
-            :cadenceN => info.currentCadence,
-            :pace10s =>  fmtSecs(toPace(avg10s)),
-            :paceAvg => fmtSecs(toPace(info.averageSpeed)),
-            :half => fmtSecs(expectedHalf),
-            :time => fmtTime(Sys.getClockTime()),
-            :halfSecs => halfSecs
-        };
-        //Sys.println(model);
-        return model;
+        dist = toDist(info.elapsedDistance);
+        hr = toStr(info.currentHeartRate);
+        hrN = info.currentHeartRate;
+        timer = fmtSecs(elapsed);
+        timerSecs = elapsedSecs;
+        cadence = toStr(info.currentCadence);
+        cadenceN = info.currentCadence;
+        pace10s =  fmtSecs(toPace(avg10s));
+        paceAvg = fmtSecs(toPace(info.averageSpeed));
+        half = fmtSecs(expectedHalf);
+        time = fmtTime(Sys.getClockTime());
+        halfSecs = halfSecs;
     }
 }

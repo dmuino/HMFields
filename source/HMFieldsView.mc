@@ -3,11 +3,10 @@ using Toybox.Graphics;
 using Toybox.System as Sys;
 
 class HMFieldsView extends Ui.DataField {
-    var fields;
-    var model;
+    hidden var fields;
+
     function initialize() {
         fields = new HMFields();
-        model = { :battery => "0%" };
     }
 
     function onLayout(dc) {
@@ -36,41 +35,40 @@ class HMFieldsView extends Ui.DataField {
         dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_WHITE);
         dc.clear();
 
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
-        textL(dc, 36, 45, Graphics.FONT_NUMBER_MEDIUM,  model[:half]);
-        if (model[:halfSecs] != null) {
-            var length = dc.getTextWidthInPixels(model[:half], Graphics.FONT_NUMBER_MEDIUM);
-            textL(dc, 36 + length + 1, 55, Graphics.FONT_NUMBER_MILD, model[:halfSecs]);
+        textL(dc, 36, 45, Graphics.FONT_NUMBER_MEDIUM,  fields.half);
+        if (fields.halfSecs != null) {
+            var length = dc.getTextWidthInPixels(fields.half, Graphics.FONT_NUMBER_MEDIUM);
+            textL(dc, 36 + length + 1, 55, Graphics.FONT_NUMBER_MILD, fields.halfSecs);
         }
         textL(dc, 55, 18, Graphics.FONT_XTINY, "HALF");
 
-        textL(dc, 112, 45, Graphics.FONT_NUMBER_MEDIUM,  model[:timer]);
-        if (model[:timerSecs] != null) {
-            var length = dc.getTextWidthInPixels(model[:timer], Graphics.FONT_NUMBER_MEDIUM);
-            textL(dc, 112 + length + 1, 55, Graphics.FONT_NUMBER_MILD, model[:timerSecs]);
+        textL(dc, 112, 45, Graphics.FONT_NUMBER_MEDIUM,  fields.timer);
+        if (fields.timerSecs != null) {
+            var length = dc.getTextWidthInPixels(fields.timer, Graphics.FONT_NUMBER_MEDIUM);
+            textL(dc, 112 + length + 1, 55, Graphics.FONT_NUMBER_MILD, fields.timerSecs);
         }
 
         textL(dc, 120, 18, Graphics.FONT_XTINY,  "TIMER");
 
-        doCadenceBackground(dc, model[:cadenceN]);
-        textC(dc, 30, 107, Graphics.FONT_NUMBER_MEDIUM, model[:cadence]);
+        doCadenceBackground(dc, fields.cadenceN);
+        textC(dc, 30, 107, Graphics.FONT_NUMBER_MEDIUM, fields.cadence);
         textC(dc, 30, 79, Graphics.FONT_XTINY,  "CAD");
 
-        textC(dc, 110, 107, Graphics.FONT_NUMBER_MEDIUM, model[:pace10s]);
+        textC(dc, 110, 107, Graphics.FONT_NUMBER_MEDIUM, fields.pace10s);
         textL(dc, 78, 79, Graphics.FONT_XTINY,  "PACE 10s");
 
-        doHrBackground(dc, model[:hrN]);
-        textC(dc, 180, 107, Graphics.FONT_NUMBER_MEDIUM, model[:hr]);
+        doHrBackground(dc, fields.hrN);
+        textC(dc, 180, 107, Graphics.FONT_NUMBER_MEDIUM, fields.hr);
         textC(dc, 180, 79, Graphics.FONT_XTINY,  "HR");
 
 
-        textC(dc, 66, 154, Graphics.FONT_NUMBER_MEDIUM, model[:dist]);
+        textC(dc, 66, 154, Graphics.FONT_NUMBER_MEDIUM, fields.dist);
         textL(dc, 54, 186, Graphics.FONT_XTINY, "DIST");
 
-        textC(dc, 150, 154, Graphics.FONT_NUMBER_MEDIUM, model[:paceAvg]);
+        textC(dc, 150, 154, Graphics.FONT_NUMBER_MEDIUM, fields.paceAvg);
         textL(dc, 124, 186, Graphics.FONT_XTINY, "A PACE");
 
-        textL(dc, 75, 206, Graphics.FONT_TINY, model[:time]);
+        textL(dc, 75, 206, Graphics.FONT_TINY, fields.time);
         drawBattery(dc);
         drawLayout(dc);
         return true;
@@ -147,7 +145,7 @@ class HMFieldsView extends Ui.DataField {
     }
 
     function compute(info) {
-        model = fields.compute(info);
+        fields.compute(info);
         return 1;
     }
 
